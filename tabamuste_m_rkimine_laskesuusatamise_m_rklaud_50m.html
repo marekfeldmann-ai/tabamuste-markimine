@@ -1,0 +1,2008 @@
+<!DOCTYPE html>
+<html lang="et" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>TABAMUSTE MÄRKIMINE — Digitaalne Laskesuusatamise Märklaud 50m</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter & Chakra Petch for sporty telemetry numbers -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,600;0,700;1,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Chakra Petch', 'sans-serif'],
+          },
+          colors: {
+            est: {
+              blue: '#0072CE',
+              dark: '#06101E',
+              card: '#0D1B2E',
+              border: '#1B3355',
+              pink: '#FF2A85',
+              gold: '#FFD700'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * {
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+    body {
+      background: radial-gradient(circle at 50% 0%, #0f294a 0%, #06101E 70%);
+      min-height: 100vh;
+      color: #F8FAFC;
+      overscroll-behavior-y: contain;
+    }
+    /* Prevent accidental scrolling or pinch-zooming while interacting with the SVG target or clock */
+    .touch-none-surface {
+      touch-action: none !important;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+    }
+    /* Ensure inputs & selects are at least 16px so iOS/Android never auto-zooms on focus */
+    input, select, textarea {
+      font-size: 16px !important;
+    }
+    /* Custom High-Visibility Touchscreen Range Slider (36px Gloved-Finger Thumb) */
+    input[type="range"].touch-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      height: 16px;
+      border-radius: 9999px;
+      outline: none;
+      touch-action: pan-y;
+    }
+    input[type="range"].touch-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      border: 4px solid #0072CE;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.65), 0 0 0 3px rgba(56, 189, 248, 0.35);
+      cursor: pointer;
+      transition: transform 0.1s ease, background-color 0.1s ease;
+    }
+    input[type="range"].touch-slider::-webkit-slider-thumb:active {
+      transform: scale(1.18);
+      background: #E0F2FE;
+      border-color: #38BDF8;
+    }
+    input[type="range"].touch-slider::-moz-range-thumb {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      border: 4px solid #0072CE;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.65), 0 0 0 3px rgba(56, 189, 248, 0.35);
+      cursor: pointer;
+      transition: transform 0.1s ease;
+    }
+    input[type="range"].touch-slider::-moz-range-thumb:active {
+      transform: scale(1.18);
+      background: #E0F2FE;
+    }
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #06101E;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1B3355;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #0072CE;
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.4); opacity: 0; }
+      75% { transform: scale(1.12); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .shot-marker {
+      transform-origin: center;
+      transform-box: fill-box;
+      animation: popIn 0.16s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes flagFlutter {
+      0%, 100% { transform: skewY(0deg) scaleX(1); }
+      50% { transform: skewY(-3deg) scaleX(0.96); }
+    }
+    .flag-flutter {
+      transform-origin: left center;
+      animation: flagFlutter var(--flutter-dur, 0.9s) ease-in-out infinite;
+    }
+    .estonian-stripe {
+      background: linear-gradient(90deg, #0072CE 0%, #0072CE 33.3%, #000000 33.3%, #000000 66.6%, #FFFFFF 66.6%, #FFFFFF 100%);
+    }
+  </style>
+</head>
+<body class="font-sans antialiased selection:bg-est-blue selection:text-white pb-14">
+
+  <!-- Top Estonian Tricolor Accent Bar -->
+  <div class="h-2 w-full estonian-stripe shadow-md"></div>
+
+  <!-- Clean Logo-Free Touchscreen Header -->
+  <header class="border-b border-est-border bg-est-dark/95 backdrop-blur-md sticky top-0 z-30">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 py-3 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
+      
+      <!-- Title & Athlete Selector Row -->
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <div class="flex items-center gap-2.5">
+            <span class="font-display font-bold tracking-wider text-xl sm:text-2xl text-white">TABAMUSTE MÄRKIMINE</span>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-bold bg-est-blue/25 text-sky-300 border border-est-blue/50">
+              EST • 50m
+            </span>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-400 font-medium">
+            Digitaalne Laskesuusatamise Märklaud • Puuteekraani Režiim
+          </p>
+        </div>
+
+        <!-- Header Athlete Selector (Large Touch Target) -->
+        <div class="flex items-center gap-2 w-full sm:w-auto">
+          <label for="selectAthlete" class="text-xs font-bold uppercase tracking-wider text-slate-400 hidden xl:inline">Sportlane:</label>
+          <select id="selectAthlete" onchange="handleAthleteChange()" class="flex-1 sm:w-56 min-h-[48px] rounded-xl bg-slate-900 border-2 border-est-border px-3.5 py-2 text-white font-semibold focus:outline-none focus:border-est-blue">
+            <option value="Tuuli Tomingas">Tuuli Tomingas</option>
+            <option value="Hanna-Brita Kaasik">Hanna-Brita Kaasik</option>
+            <option value="Karl Rasmus Tiislar">Karl Rasmus Tiislar</option>
+            <option value="Indrek Tobreluts (Treener)">Indrek Tobreluts (Treener)</option>
+            <option value="Külaline">Külaline</option>
+            <option value="Muu">Muu sportlane...</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Custom Athlete Name Input (shown only when "Muu sportlane..." is selected) -->
+      <div id="customAthleteWrapper" class="hidden w-full sm:w-72">
+        <input type="text" id="inputCustomAthlete" placeholder="Sisesta sportlase nimi..." class="w-full min-h-[48px] rounded-xl bg-slate-900 border-2 border-est-blue px-3.5 py-2 text-white font-semibold focus:outline-none"/>
+      </div>
+
+      <!-- Position & Paper Rings Touch-Friendly Switcher (Minimum 48px-52px Tap Height) -->
+      <div class="flex flex-wrap items-center gap-2.5 w-full lg:w-auto justify-between lg:justify-end">
+        <div class="grid grid-cols-2 rounded-2xl bg-slate-900/95 p-1.5 border border-est-border flex-1 sm:flex-initial min-w-[270px]">
+          <button id="btnPosProne" type="button" onclick="setPositionMode('prone')" class="min-h-[46px] px-3.5 py-2 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2 bg-est-blue text-white shadow active:scale-95">
+            <span class="w-3 h-3 rounded-full bg-white inline-block"></span>
+            Lamades 45 mm
+          </button>
+          <button id="btnPosStanding" type="button" onclick="setPositionMode('standing')" class="min-h-[46px] px-3.5 py-2 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2 text-slate-300 hover:text-white active:scale-95">
+            <span class="w-4 h-4 rounded-full border-2 border-current inline-block"></span>
+            Püsti 115 mm
+          </button>
+        </div>
+
+        <!-- Ring Visibility Toggle -->
+        <button id="btnPaperRings" type="button" onclick="togglePaperRings()" class="min-h-[52px] px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-bold border-2 border-est-border bg-est-card active:bg-slate-800 text-slate-100 transition flex items-center justify-center gap-2 active:scale-95">
+          <svg class="w-5 h-5 text-sky-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="9" stroke-width="2"/>
+            <circle cx="12" cy="12" r="5" stroke-width="2"/>
+            <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+          </svg>
+          <span id="paperRingsLabel">Pabermärklaud: SEES</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Main Content Grid -->
+  <main class="max-w-7xl mx-auto px-3 sm:px-6 pt-4 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+    <!-- LEFT / CENTER COLUMN: Interactive Touchscreen Target Board & 5-Button Action Bar (7 cols) -->
+    <section class="lg:col-span-7 flex flex-col items-center w-full">
+      
+      <!-- Top Status & Touch Mode Bar above Target -->
+      <div class="w-full max-w-[580px] flex flex-wrap items-center justify-between gap-2 mb-3 px-1">
+        <div class="flex flex-wrap items-center gap-2.5 text-xs sm:text-sm">
+          <span class="inline-flex items-center gap-2 font-bold text-slate-100 bg-slate-900/90 border border-slate-700 px-3 py-1.5 rounded-xl">
+            <span class="w-3.5 h-3.5 rounded-full bg-est-pink inline-block ring-2 ring-white/50"></span>
+            Praegune seeria: <span id="activeShotCountLabel" class="font-display font-bold text-base text-white">0</span>/8
+          </span>
+          <span id="compareLegendPill" class="hidden items-center gap-2 font-bold text-amber-300 bg-amber-500/15 border-2 border-amber-500/40 px-3 py-1.5 rounded-xl">
+            <span class="w-3.5 h-3.5 rounded-full bg-est-gold inline-block"></span>
+            <span id="compareSeriesTitle" class="truncate max-w-[180px] sm:max-w-[240px]"></span>
+            <button type="button" onclick="clearComparison()" class="ml-1 w-6 h-6 rounded-lg bg-amber-500/20 text-amber-100 hover:bg-amber-500/40 flex items-center justify-center font-bold" title="Eemalda võrdlus">✕</button>
+          </span>
+        </div>
+
+        <!-- MPI & Spread Overlay Toggle (Large Tap Area) -->
+        <label class="inline-flex items-center gap-2.5 cursor-pointer text-xs sm:text-sm font-semibold text-slate-200 select-none bg-slate-900/80 border border-slate-700 px-3 py-1.5 rounded-xl min-h-[40px]">
+          <input type="checkbox" id="chkShowMPI" checked onchange="renderTarget()" class="sr-only peer">
+          <div class="w-11 h-6 bg-slate-800 border border-slate-600 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all relative peer-checked:bg-est-blue"></div>
+          <span>Keskpunkt (MPI)</span>
+        </label>
+      </div>
+
+      <!-- INTERACTIVE TOUCHSCREEN SVG TARGET CONTAINER -->
+      <div class="w-full max-w-[580px] aspect-square bg-est-card rounded-3xl p-2 sm:p-4 border-2 border-est-border shadow-[0_20px_50px_rgba(0,0,0,0.65)] relative flex items-center justify-center touch-none-surface">
+        
+        <!-- Top-Left Corner Wind Indicator Overlay on Target -->
+        <div class="absolute top-3.5 left-3.5 z-10 bg-slate-950/90 backdrop-blur border border-est-border rounded-2xl px-3 py-2 flex items-center gap-2.5 pointer-events-none shadow-lg">
+          <div id="targetWindArrow" class="w-7 h-7 rounded-xl bg-slate-900 border border-slate-700 flex items-center justify-center text-sky-400 transition-transform duration-200">
+            <svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M12 19V5M12 5l-5 5M12 5l5 5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="text-xs leading-tight">
+            <div class="text-slate-400 flex items-center gap-1 font-semibold">
+              <span>🚩 Tuul</span>
+              <span id="targetWindClockBadge" class="text-sky-400 font-bold">Kell 9</span>
+            </div>
+            <div id="targetWindLabel" class="font-bold text-white">1.5 m/s • Vasakult</div>
+          </div>
+        </div>
+
+        <!-- Top-Right Corner Hit Counter & 1x/2x Touch Zoom Toggle -->
+        <div class="absolute top-3.5 right-3.5 z-10 flex items-center gap-2">
+          <button id="btnTargetZoom" type="button" onclick="toggleTargetZoom()" class="min-h-[48px] px-3.5 py-1.5 rounded-2xl bg-slate-950/90 hover:bg-slate-900 active:scale-95 border-2 border-sky-500/50 text-sky-300 font-display font-bold text-xs sm:text-sm shadow-lg flex items-center gap-1.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16zM11 8v6M8 11h6"/>
+            </svg>
+            <span id="zoomBtnText">Suum: 1x</span>
+          </button>
+
+          <div class="bg-slate-950/90 backdrop-blur border border-est-border rounded-2xl px-3.5 py-1.5 text-right pointer-events-none shadow-lg min-h-[48px] flex flex-col justify-center">
+            <div class="text-[10px] uppercase tracking-wider text-slate-400 font-bold">Tabamused</div>
+            <div id="targetHitBadge" class="font-display font-bold text-base sm:text-lg text-emerald-400 leading-none mt-0.5">0 / 0</div>
+          </div>
+        </div>
+
+        <!-- Live Touch Coordinate Readout Pill (Appears while finger is touching/dragging on target) -->
+        <div id="touchLiveBanner" class="hidden absolute top-20 inset-x-0 mx-auto w-max z-20 bg-est-blue text-white font-display font-bold text-xs sm:text-sm px-4 py-1.5 rounded-full shadow-2xl border-2 border-white pointer-events-none items-center gap-2">
+          <span id="touchLiveText">Lask #1 • Vabasta sõrm märkimiseks</span>
+        </div>
+
+        <!-- THE BIATHLON 50M TARGET SVG -->
+        <!-- Coordinate system: viewBox="-105 -105 210 210" (1x) or "-58 -58 116 116" (2x zoom) where 1 SVG unit = 1 mm on the 50m target -->
+        <svg id="biathlonSvg" viewBox="-105 -105 210 210" class="w-full h-full rounded-2xl cursor-crosshair touch-none-surface">
+          <defs>
+            <radialGradient id="plateGrad" cx="50%" cy="45%" r="55%">
+              <stop offset="0%" stop-color="#FFFFFF"/>
+              <stop offset="92%" stop-color="#F1F5F9"/>
+              <stop offset="100%" stop-color="#CBD5E1"/>
+            </radialGradient>
+            <radialGradient id="blackZoneGrad" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#1E293B"/>
+              <stop offset="100%" stop-color="#090D16"/>
+            </radialGradient>
+            <filter id="shotShadow" x="-30%" y="-30%" width="160%" height="160%">
+              <feDropShadow dx="0" dy="1" stdDeviation="1.2" flood-color="#000000" flood-opacity="0.65"/>
+            </filter>
+          </defs>
+
+          <!-- Outer Target Housing Background (White Metal Plate) -->
+          <rect x="-105" y="-105" width="210" height="210" rx="14" fill="url(#plateGrad)" />
+
+          <!-- Subtle Logo-Free Watermark on Target Plate -->
+          <text x="0" y="-92" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-weight="700" font-size="5.2" fill="#64748B" letter-spacing="0.8">LASKESUUSATAMISE 50M MÄRKLAUD</text>
+
+          <!-- Clock-Face Numbers (12, 3, 6, 9) -->
+          <g font-family="Chakra Petch, sans-serif" font-weight="700" font-size="6.5" fill="#475569" text-anchor="middle" dominant-baseline="central" pointer-events="none">
+            <text x="0" y="-85">12</text>
+            <text x="86" y="0">3</text>
+            <text x="0" y="86">6</text>
+            <text x="-86" y="0">9</text>
+          </g>
+
+          <!-- Outer Paper Rings (Radius 77.5mm and 67.5mm - Rings 1 & 2 outside the black 115mm zone) -->
+          <g id="outerPaperRingsGroup" pointer-events="none">
+            <circle cx="0" cy="0" r="77.5" fill="none" stroke="#94A3B8" stroke-width="0.45" />
+            <circle cx="0" cy="0" r="67.5" fill="none" stroke="#94A3B8" stroke-width="0.45" />
+          </g>
+
+          <!-- 115mm Standing Target Zone (Radius 57.5 mm) -->
+          <circle id="standingZoneCircle" cx="0" cy="0" r="57.5" fill="url(#blackZoneGrad)" stroke="#0F172A" stroke-width="0.9" pointer-events="none"/>
+
+          <!-- Inner Paper Target Scoring Rings (inside the 115mm black zone) -->
+          <g id="innerPaperRingsGroup" pointer-events="none">
+            <circle cx="0" cy="0" r="47.5" fill="none" stroke="#475569" stroke-width="0.4" />
+            <circle cx="0" cy="0" r="37.5" fill="none" stroke="#475569" stroke-width="0.4" />
+            <circle cx="0" cy="0" r="27.5" fill="none" stroke="#475569" stroke-width="0.4" />
+          </g>
+
+          <!-- 45mm Prone Hit Zone (Radius 22.5 mm) -->
+          <circle id="proneZoneCircle" cx="0" cy="0" r="22.5" fill="#05080F" stroke="#38BDF8" stroke-width="1.1" pointer-events="none" />
+
+          <!-- Innermost Zeroing Rings (Ring 8: r=17.5mm, Ring 9: r=7.5mm) -->
+          <g id="centerPaperRingsGroup" pointer-events="none">
+            <circle cx="0" cy="0" r="17.5" fill="none" stroke="#64748B" stroke-width="0.4" />
+            <circle cx="0" cy="0" r="7.5" fill="none" stroke="#94A3B8" stroke-width="0.45" />
+          </g>
+
+          <!-- Ring Number Labels (1 to 8) -->
+          <g id="paperRingNumbers" font-family="Inter, sans-serif" font-size="3.6" font-weight="600" text-anchor="middle" dominant-baseline="central" pointer-events="none">
+            <text x="0" y="-72.5" fill="#475569">1</text>
+            <text x="0" y="-62.5" fill="#475569">2</text>
+            <text x="0" y="-52.5" fill="#94A3B8">3</text>
+            <text x="0" y="-42.5" fill="#94A3B8">4</text>
+            <text x="0" y="-32.5" fill="#94A3B8">5</text>
+            <text x="0" y="-25.0" fill="#64748B" font-size="2.8">6</text>
+            <text x="0" y="-12.5" fill="#94A3B8">8</text>
+          </g>
+
+          <!-- Precision Crosshair Lines -->
+          <g stroke="#64748B" stroke-width="0.4" stroke-dasharray="2,2" opacity="0.75" pointer-events="none">
+            <line x1="-80" y1="0" x2="80" y2="0" />
+            <line x1="0" y1="-80" x2="0" y2="80" />
+          </g>
+          <!-- Dead-center pin -->
+          <circle cx="0" cy="0" r="1.1" fill="#E2E8F0" pointer-events="none"/>
+
+          <!-- Dynamic Layer: Mean Point of Impact (MPI) & Group Circle -->
+          <g id="mpiLayer" pointer-events="none"></g>
+
+          <!-- Dynamic Layer: Comparison Series Shots (Yellow #FFD700) -->
+          <g id="comparisonShotsLayer" pointer-events="none"></g>
+
+          <!-- Dynamic Layer: Active Series Shots (Pink #FF2A85 - draggable via touch!) -->
+          <g id="activeShotsLayer"></g>
+
+          <!-- Dynamic Layer: Live Touch Crosshair Loupe / Preview while finger is pressing/dragging -->
+          <g id="touchPreviewLayer" class="hidden" pointer-events="none">
+            <!-- Outer sighting reticle visible around the finger tip -->
+            <circle id="touchPreviewOuterRing" cx="0" cy="0" r="16" fill="none" stroke="#38BDF8" stroke-width="0.9" stroke-dasharray="2,2"/>
+            <line id="touchPreviewLineH1" x1="-24" y1="0" x2="-8" y2="0" stroke="#38BDF8" stroke-width="1.1"/>
+            <line id="touchPreviewLineH2" x1="8" y1="0" x2="24" y2="0" stroke="#38BDF8" stroke-width="1.1"/>
+            <line id="touchPreviewLineV1" x1="0" y1="-24" x2="0" y2="-8" stroke="#38BDF8" stroke-width="1.1"/>
+            <line id="touchPreviewLineV2" x1="0" y1="8" x2="0" y2="24" stroke="#38BDF8" stroke-width="1.1"/>
+            <!-- Ghost bullet hole preview -->
+            <circle id="touchPreviewDot" cx="0" cy="0" r="6.2" fill="#FF2A85" fill-opacity="0.85" stroke="#FFFFFF" stroke-width="1.2"/>
+            <!-- Floating label above finger so thumb never hides the shot number/hit status -->
+            <g id="touchPreviewCallout" transform="translate(0, -26)">
+              <rect x="-26" y="-7" width="52" height="12" rx="3.5" fill="#06101E" stroke="#38BDF8" stroke-width="0.8"/>
+              <text id="touchPreviewCalloutText" x="0" y="0" text-anchor="middle" dominant-baseline="central" font-family="Chakra Petch, sans-serif" font-weight="700" font-size="5.2" fill="#FFFFFF">TABAMUS</text>
+            </g>
+          </g>
+
+          <!-- Embedded SVG Corner Wind Badge (also rendered in PNG export) -->
+          <g id="svgEmbeddedWindBadge" transform="translate(-100, 76)" pointer-events="none">
+            <rect x="0" y="0" width="66" height="23" rx="4.5" fill="#090D16" fill-opacity="0.88" stroke="#1E293B" stroke-width="0.6"/>
+            <g transform="translate(11.5, 11.5)">
+              <circle cx="0" cy="0" r="7.5" fill="#0F172A" stroke="#38BDF8" stroke-width="0.6"/>
+              <g id="svgWindVectorArrow" transform="rotate(0)">
+                <line x1="0" y1="4.8" x2="0" y2="-4.8" stroke="#38BDF8" stroke-width="1.3" stroke-linecap="round"/>
+                <polyline points="-2.6,-2 0,-5.2 2.6,-2" fill="none" stroke="#38BDF8" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+              </g>
+            </g>
+            <text id="svgWindBadgeLine1" x="23" y="9.5" font-family="Chakra Petch, sans-serif" font-weight="700" font-size="5.2" fill="#38BDF8">TUUL: KELL 9</text>
+            <text id="svgWindBadgeLine2" x="23" y="17.5" font-family="Inter, sans-serif" font-weight="600" font-size="4.8" fill="#F8FAFC">1.5 m/s (Vasakult)</text>
+          </g>
+        </svg>
+
+        <!-- Bottom Hint Banner inside Target Card -->
+        <div class="absolute bottom-2.5 inset-x-4 flex items-center justify-between text-[11px] sm:text-xs text-slate-500 font-medium pointer-events-none">
+          <span>Puuduta või lohista lasu märkimiseks (max 8)</span>
+          <span id="activeZoneHint" class="font-bold text-sky-600">Lamades: Ø 45 mm</span>
+        </div>
+      </div>
+
+      <!-- 5-BUTTON TOUCHSCREEN ACTION BAR (Minimum 54px Height, Large Tap Zones) -->
+      <div class="w-full max-w-[580px] grid grid-cols-2 sm:grid-cols-5 gap-2.5 mt-4">
+        
+        <!-- 1. Uus seeria (New Series - cleans up target completely) -->
+        <button type="button" onclick="startNewSeries()" class="col-span-2 sm:col-span-1 min-h-[54px] px-3 py-3 rounded-2xl font-bold text-sm bg-sky-600 hover:bg-sky-500 active:bg-sky-400 text-white shadow-lg shadow-sky-600/25 border border-sky-400/40 transition flex items-center justify-center gap-1.5 active:scale-95">
+          <span>➕ Uus seeria</span>
+        </button>
+
+        <!-- 2. Võta tagasi (Undo last shot) -->
+        <button type="button" onclick="undoLastShot()" id="btnUndo" class="min-h-[54px] px-3 py-3 rounded-2xl font-bold text-sm bg-slate-800 hover:bg-slate-700 active:bg-slate-600 text-slate-100 border-2 border-slate-600/80 transition flex items-center justify-center gap-1.5 active:scale-95 disabled:opacity-40 disabled:pointer-events-none">
+          <span>↩ Võta tagasi</span>
+        </button>
+
+        <!-- 3. Puhasta (Clear active shots) -->
+        <button type="button" onclick="clearActiveSeries()" id="btnClear" class="min-h-[54px] px-3 py-3 rounded-2xl font-bold text-sm bg-slate-800 hover:bg-rose-950/80 active:bg-rose-900 text-slate-100 border-2 border-slate-600/80 transition flex items-center justify-center gap-1.5 active:scale-95 disabled:opacity-40 disabled:pointer-events-none">
+          <span>🗑 Puhasta</span>
+        </button>
+
+        <!-- 4. Salvesta seeria (Save series with Date & Time) -->
+        <button type="button" onclick="saveCurrentSeries()" id="btnSave" class="min-h-[54px] px-3 py-3 rounded-2xl font-bold text-sm bg-est-blue hover:bg-sky-500 active:bg-sky-400 text-white shadow-lg shadow-est-blue/30 border border-sky-300/30 transition flex items-center justify-center gap-1.5 active:scale-95">
+          <span>💾 Salvesta seeria</span>
+        </button>
+
+        <!-- 5. Laadi PNG (Export PNG image) -->
+        <button type="button" onclick="exportTargetPng()" class="col-span-2 sm:col-span-1 min-h-[54px] px-3 py-3 rounded-2xl font-bold text-sm bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-400 text-white shadow-lg shadow-emerald-600/20 border border-emerald-400/30 transition flex items-center justify-center gap-1.5 active:scale-95">
+          <span>📷 Laadi PNG</span>
+        </button>
+      </div>
+
+      <!-- Shot-by-Shot Touch Pill Strip (Large Tap Targets to delete individual shots) -->
+      <div class="w-full max-w-[580px] mt-3.5 bg-est-card/90 border border-est-border rounded-2xl p-3.5">
+        <div class="flex items-center justify-between text-xs text-slate-400 mb-2.5">
+          <span class="font-bold uppercase tracking-wider text-slate-300">Lasud järjekorras (1–8)</span>
+          <span class="text-xs text-slate-400">Puuduta lasu numbrit kustutamiseks või lohista märklaual</span>
+        </div>
+        <div id="shotPillsContainer" class="flex flex-wrap gap-2 min-h-[44px] items-center">
+          <span class="text-xs sm:text-sm text-slate-500 italic">Ühtegi lasku pole veel märgitud. Puuduta märklauda!</span>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- RIGHT COLUMN: Saved Series Dropdown, Wind Clock & Slider, Diopter Calculator (5 cols) -->
+    <section class="lg:col-span-5 flex flex-col gap-5 w-full">
+
+      <!-- 1. SAVED SERIES DROPDOWN & VISIBLE POP-UP BUTTON (Skidskytteexperten Workflow) -->
+      <div class="bg-est-card border-2 border-est-border rounded-2xl p-4 sm:p-5 shadow-xl">
+        <div class="flex flex-wrap items-center justify-between gap-2 pb-3 mb-3.5 border-b border-est-border">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-5 rounded-full bg-est-gold"></span>
+            <h2 class="font-display font-bold text-base sm:text-lg text-white tracking-wide">
+              SALVESTATUD SEERIAD (<span id="savedCountBadge">0</span>)
+            </h2>
+          </div>
+
+          <!-- Export / Import Backup Controls -->
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="exportAllJson()" class="min-h-[40px] px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 border border-slate-700 transition">
+              Eksport JSON
+            </button>
+            <label class="min-h-[40px] px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-200 border border-slate-700 transition cursor-pointer flex items-center">
+              Import
+              <input type="file" id="importJsonInput" accept=".json" onchange="importJsonFile(event)" class="hidden"/>
+            </label>
+          </div>
+        </div>
+
+        <!-- Optional Note Input before saving -->
+        <div class="mb-3.5">
+          <label for="inputNotes" class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">Laskemoon / Märkus (valikuline)</label>
+          <input type="text" id="inputNotes" placeholder="nt. Lapua Polar Biathlon • Pealelaskmine" class="w-full min-h-[48px] rounded-xl bg-slate-900 border-2 border-slate-700 px-3.5 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-est-blue"/>
+        </div>
+
+        <!-- Date & Time Saved Series Dropdown Selector -->
+        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-3.5 mb-3">
+          <label for="savedSeriesDropdown" class="block text-xs font-bold uppercase tracking-wider text-amber-300 mb-2">
+            Vali salvestatud seeria (Kuupäev ja kellaaeg):
+          </label>
+          <select id="savedSeriesDropdown" class="w-full min-h-[52px] rounded-xl bg-slate-950 border-2 border-slate-700 px-3.5 py-2.5 text-white font-semibold focus:outline-none focus:border-est-gold mb-3">
+            <!-- Populated dynamically via JS -->
+          </select>
+
+          <!-- ALWAYS-VISIBLE PROMINENT POP-UP BUTTONS -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <button type="button" onclick="popSelectedDropdownOnTarget('compare')" class="min-h-[52px] px-4 py-3 rounded-xl font-bold text-sm bg-est-gold hover:bg-amber-400 active:bg-amber-300 text-slate-950 shadow-lg shadow-amber-500/20 transition flex items-center justify-center gap-2 active:scale-95">
+              <span>🎯 Kuva märklaual (Kollane)</span>
+            </button>
+            <button type="button" onclick="popSelectedDropdownOnTarget('active')" class="min-h-[52px] px-4 py-3 rounded-xl font-bold text-sm bg-pink-600/90 hover:bg-pink-500 active:bg-pink-400 text-white border border-pink-400/40 transition flex items-center justify-center gap-2 active:scale-95">
+              <span>Ava aktiivsena (Roosa)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Scrollable Saved Series Cards -->
+        <div id="savedSeriesList" class="space-y-2.5 max-h-[260px] overflow-y-auto pr-1">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </div>
+
+      <!-- 2. INTERACTIVE BIATHLON WIND CLOCK & TOUCH SLIDER (TUULE SUUND JA KIIRUS) -->
+      <div class="bg-est-card border-2 border-est-border rounded-2xl p-4 sm:p-5 shadow-xl">
+        <div class="flex items-center justify-between gap-2 pb-3 mb-3.5 border-b border-est-border">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-5 rounded-full bg-rose-500"></span>
+            <h2 class="font-display font-bold text-base sm:text-lg text-white tracking-wide">
+              TUULE SUUND JA KIIRUS (50m)
+            </h2>
+          </div>
+          <span id="windSummaryPill" class="px-3 py-1 rounded-full text-xs font-bold bg-rose-500/15 text-rose-300 border border-rose-500/30">
+            🚩 Kell 9 • 1.5 m/s
+          </span>
+        </div>
+
+        <!-- Top Grid: Enlarged 12-Hour Touch Wind Clock + Animated Range Wind Flag -->
+        <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
+          
+          <!-- Interactive 12-Hour Wind Clock SVG (7 cols - Larger Touch Targets) -->
+          <div class="sm:col-span-7 flex flex-col items-center">
+            <div class="text-xs text-slate-300 mb-2 font-semibold text-center">
+              Puuduta kellaaega (kust tuul puhub: 12=Vastutuul, 3=Paremalt, 9=Vasakult)
+            </div>
+            <div class="relative w-56 h-56 sm:w-52 sm:h-52 touch-none-surface">
+              <svg id="windClockSvg" viewBox="-100 -100 200 200" class="w-full h-full touch-none-surface">
+                <!-- Outer Clock Dial -->
+                <circle cx="0" cy="0" r="95" fill="#06101E" stroke="#1B3355" stroke-width="2.5"/>
+                <circle cx="0" cy="0" r="68" fill="none" stroke="#1E293B" stroke-width="1" stroke-dasharray="3,3"/>
+
+                <!-- Crosshair Reference Lines -->
+                <line x1="-68" y1="0" x2="68" y2="0" stroke="#1E293B" stroke-width="1"/>
+                <line x1="0" y1="-68" x2="0" y2="68" stroke="#1E293B" stroke-width="1"/>
+
+                <!-- Dynamic Wind Blowing Vector Arrow inside Clock -->
+                <g id="clockWindVectorGroup" transform="rotate(90)" pointer-events="none">
+                  <line x1="-40" y1="0" x2="34" y2="0" stroke="#38BDF8" stroke-width="4" stroke-linecap="round" opacity="0.85"/>
+                  <polygon points="42,0 26,-8 30,0 26,8" fill="#38BDF8"/>
+                </g>
+
+                <!-- 12 Clock Hour Touch Buttons (populated by JS with enlarged hit zones) -->
+                <g id="clockHoursGroup"></g>
+
+                <!-- Center Calm (0 - Tuulevaikus) Button -->
+                <g onclick="setWindDir(0)" class="cursor-pointer">
+                  <circle id="clockCenterCalmCircle" cx="0" cy="0" r="23" fill="#0F172A" stroke="#334155" stroke-width="2"/>
+                  <text x="0" y="-3" text-anchor="middle" dominant-baseline="central" font-family="Chakra Petch, sans-serif" font-weight="700" font-size="11" fill="#E2E8F0" pointer-events="none">0</text>
+                  <text x="0" y="8" text-anchor="middle" dominant-baseline="central" font-family="Inter, sans-serif" font-weight="700" font-size="6" fill="#94A3B8" pointer-events="none">VAIKUS</text>
+                </g>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Animated Red Biathlon Wind Flag ("Tuulelipp") & Direction Info (5 cols) -->
+          <div class="sm:col-span-5 flex flex-col justify-between bg-slate-900/90 border border-slate-800 rounded-2xl p-3.5 h-full">
+            <div class="flex items-center justify-between text-xs text-slate-400 font-bold uppercase tracking-wider">
+              <span>Tiiru Tuulelipp</span>
+              <span id="windAngleDesc" class="text-sky-400">Vasakult →</span>
+            </div>
+
+            <!-- Live Animated Biathlon Range Flag SVG -->
+            <div class="my-2 flex items-center justify-center bg-slate-950/90 rounded-xl border border-slate-800/80 py-2">
+              <svg viewBox="0 0 140 95" class="w-full h-24 overflow-visible">
+                <line x1="15" y1="86" x2="125" y2="86" stroke="#334155" stroke-width="2" stroke-linecap="round"/>
+                <line x1="42" y1="86" x2="42" y2="14" stroke="#94A3B8" stroke-width="3.5" stroke-linecap="round"/>
+                <circle cx="42" cy="13" r="3" fill="#CBD5E1"/>
+                <path d="M42,58 A38,38 0 0,0 80,20" fill="none" stroke="#1E293B" stroke-width="1" stroke-dasharray="2,2"/>
+                <g id="rangeFlagPivot" transform="translate(42, 18)">
+                  <g id="rangeFlagAngleGroup" transform="rotate(55)">
+                    <g id="rangeFlagFlutterGroup" class="flag-flutter">
+                      <polygon id="rangeFlagPolygon" points="0,-4 62,-2 62,3 0,5" fill="#EF4444" stroke="#FCA5A5" stroke-width="0.6"/>
+                      <polygon points="18,-3.4 30,-3 30,3.5 18,4" fill="#FFFFFF" opacity="0.85"/>
+                    </g>
+                  </g>
+                </g>
+                <text id="rangeFlagStateText" x="72" y="80" font-family="Inter, sans-serif" font-size="8.5" font-weight="600" fill="#94A3B8">Kerge tuul (~35°)</text>
+              </svg>
+            </div>
+
+            <div class="text-xs text-slate-300 leading-snug">
+              <div class="flex justify-between">
+                <span>Suund:</span>
+                <span id="windDirDetailText" class="text-white font-bold">Kell 9 (Vasakult)</span>
+              </div>
+              <div class="flex justify-between mt-1">
+                <span>Kiirus:</span>
+                <span id="windSpeedDetailText" class="text-sky-400 font-display font-bold text-sm">1.5 m/s</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- High-Visibility Touchscreen Wind Speed Slider ("Tuule kiirus liugur") -->
+        <div class="mt-4 pt-4 border-t border-slate-800/90">
+          <div class="flex items-center justify-between mb-3">
+            <label for="inputWindSpeedSlider" class="font-bold text-sm text-slate-100">
+              Tuule kiirus (liugur): <span id="windSpeedSliderValue" class="font-display font-bold text-sky-400 text-lg ml-1">1.5 m/s</span>
+            </label>
+            <div class="flex items-center gap-1.5">
+              <input type="number" id="inputWindSpeedNumber" min="0" max="12" step="0.1" value="1.5" onchange="setWindSpeed(this.value)" class="w-20 min-h-[44px] rounded-xl bg-slate-900 border-2 border-slate-700 px-2.5 py-1 text-right font-display font-bold text-white focus:outline-none focus:border-est-blue"/>
+              <span class="text-xs font-bold text-slate-400">m/s</span>
+            </div>
+          </div>
+
+          <!-- Slider Row with Large -0.5 / +0.5 Touch Buttons -->
+          <div class="flex items-center gap-3 my-2">
+            <button type="button" onclick="stepWindSpeed(-0.5)" class="w-12 h-12 rounded-xl bg-slate-900 hover:bg-slate-800 active:bg-slate-700 border-2 border-slate-700 text-white font-display font-bold text-xl flex items-center justify-center flex-shrink-0 active:scale-95" title="Vähenda 0.5 m/s">
+              −
+            </button>
+
+            <div class="flex-1 flex flex-col">
+              <input type="range" id="inputWindSpeedSlider" min="0" max="12" step="0.1" value="1.5" oninput="setWindSpeed(this.value)" class="w-full touch-slider cursor-pointer"/>
+              <!-- Clickable Scale Tick Marks (0 to 12 m/s) -->
+              <div class="flex justify-between text-[11px] font-bold text-slate-400 mt-2 px-1">
+                <button type="button" onclick="setWindSpeed(0)" class="hover:text-white py-1 px-1">0</button>
+                <button type="button" onclick="setWindSpeed(2)" class="hover:text-white py-1 px-1">2</button>
+                <button type="button" onclick="setWindSpeed(4)" class="hover:text-white py-1 px-1">4</button>
+                <button type="button" onclick="setWindSpeed(6)" class="hover:text-white py-1 px-1">6</button>
+                <button type="button" onclick="setWindSpeed(8)" class="hover:text-white py-1 px-1">8</button>
+                <button type="button" onclick="setWindSpeed(10)" class="hover:text-white py-1 px-1">10</button>
+                <button type="button" onclick="setWindSpeed(12)" class="hover:text-white py-1 px-1">12 m/s</button>
+              </div>
+            </div>
+
+            <button type="button" onclick="stepWindSpeed(0.5)" class="w-12 h-12 rounded-xl bg-slate-900 hover:bg-slate-800 active:bg-slate-700 border-2 border-slate-700 text-white font-display font-bold text-xl flex items-center justify-center flex-shrink-0 active:scale-95" title="Suurenda 0.5 m/s">
+              +
+            </button>
+          </div>
+
+          <!-- Large Touch Speed Preset Buttons -->
+          <div class="grid grid-cols-5 gap-2 mt-3">
+            <button type="button" onclick="setWindSpeed(0)" id="btnPreset0" class="min-h-[46px] px-2 py-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-300 border-2 border-slate-700 transition active:scale-95">
+              0 m/s
+            </button>
+            <button type="button" onclick="setWindSpeed(1.5)" id="btnPreset15" class="min-h-[46px] px-2 py-2 rounded-xl text-xs font-bold bg-est-blue text-white border-2 border-sky-400 transition active:scale-95">
+              1.5 m/s
+            </button>
+            <button type="button" onclick="setWindSpeed(3.0)" id="btnPreset30" class="min-h-[46px] px-2 py-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-300 border-2 border-slate-700 transition active:scale-95">
+              3.0 m/s
+            </button>
+            <button type="button" onclick="setWindSpeed(5.0)" id="btnPreset50" class="min-h-[46px] px-2 py-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-300 border-2 border-slate-700 transition active:scale-95">
+              5.0 m/s
+            </button>
+            <button type="button" onclick="setWindSpeed(7.0)" id="btnPreset70" class="min-h-[46px] px-2 py-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-300 border-2 border-slate-700 transition active:scale-95">
+              7.0+ m/s
+            </button>
+          </div>
+        </div>
+
+        <!-- Live 50m .22 LR Wind Drift & Diopter Compensation Indicator -->
+        <div class="mt-4 pt-3 border-t border-slate-800/90 bg-slate-950/60 rounded-2xl p-3.5 border border-slate-800/80">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-bold uppercase tracking-wider text-amber-300 flex items-center gap-1.5">
+              ⚡ Tuule triiv 50m (.22 LR) & Parandus
+            </span>
+            <span id="windCrossComponentText" class="text-xs font-semibold text-slate-400">Külg: 1.5 m/s</span>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2.5">
+            <div class="bg-slate-900/90 rounded-xl p-2.5 border border-slate-800">
+              <div class="text-[11px] uppercase text-slate-400 font-semibold">Kuuli triiv</div>
+              <div id="windDriftMmText" class="font-display font-bold text-sm sm:text-base text-white mt-0.5">
+                12.0 mm paremale →
+              </div>
+              <div id="windVertDriftMmText" class="text-xs text-slate-400 mt-0.5">
+                Kõrgustriiv: 0.0 mm
+              </div>
+            </div>
+
+            <div class="bg-slate-900/90 rounded-xl p-2.5 border border-slate-800">
+              <div class="text-[11px] uppercase text-slate-400 font-semibold">Dioptri tuuleparandus</div>
+              <div id="windCompClicksText" class="font-display font-bold text-sm sm:text-base text-amber-300 mt-0.5">
+                5 klikki VASAKULE ↺
+              </div>
+              <div id="windHoldoverHint" class="text-xs text-slate-400 mt-0.5">
+                Sihi kella 9 suunas
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. DIOPTER CLICK CALCULATOR & GROUP TELEMETRY CARD -->
+      <div class="bg-est-card border-2 border-est-border rounded-2xl p-4 sm:p-5 shadow-xl">
+        <div class="flex items-center justify-between gap-2 pb-3 mb-3.5 border-b border-est-border">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-5 rounded-full bg-est-blue"></span>
+            <h2 class="font-display font-bold text-base sm:text-lg text-white tracking-wide">
+              DIOPTRI KORREKTSIOON (50m)
+            </h2>
+          </div>
+
+          <!-- Large Touch Click Scale Selector (2.5mm vs 3.0mm per click at 50m) -->
+          <div class="flex items-center gap-1.5 bg-slate-900 p-1 rounded-xl border border-slate-700">
+            <button id="btnClick25" type="button" onclick="setClickStep(2.5)" class="min-h-[38px] px-3 py-1 rounded-lg text-xs font-bold bg-est-blue text-white transition active:scale-95">2.5 mm</button>
+            <button id="btnClick30" type="button" onclick="setClickStep(3.0)" class="min-h-[38px] px-3 py-1 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition active:scale-95">3.0 mm</button>
+          </div>
+        </div>
+
+        <!-- Recommended Diopter Adjustment Boxes -->
+        <div class="grid grid-cols-2 gap-3 mb-4">
+          <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-3 flex flex-col justify-between">
+            <span class="text-xs uppercase tracking-wider text-slate-400 font-bold">Külgsuund (Vasak / Parem)</span>
+            <div class="my-1.5 flex items-baseline gap-2">
+              <span id="diopterHorizClicks" class="font-display font-bold text-2xl sm:text-3xl text-sky-400">0</span>
+              <span id="diopterHorizDir" class="font-bold text-xs sm:text-sm text-slate-200">KLIKKI</span>
+            </div>
+            <span id="mpiOffsetXText" class="text-xs text-slate-400">Kõrvalekalle: 0.0 mm</span>
+          </div>
+
+          <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-3 flex flex-col justify-between">
+            <span class="text-xs uppercase tracking-wider text-slate-400 font-bold">Kõrgus (Üles / Alla)</span>
+            <div class="my-1.5 flex items-baseline gap-2">
+              <span id="diopterVertClicks" class="font-display font-bold text-2xl sm:text-3xl text-sky-400">0</span>
+              <span id="diopterVertDir" class="font-bold text-xs sm:text-sm text-slate-200">KLIKKI</span>
+            </div>
+            <span id="mpiOffsetYText" class="text-xs text-slate-400">Kõrvalekalle: 0.0 mm</span>
+          </div>
+        </div>
+
+        <!-- Group Spread & Hit Statistics -->
+        <div class="grid grid-cols-3 gap-2.5 pt-2 border-t border-slate-800/80 text-center">
+          <div class="bg-slate-900/50 rounded-xl p-2.5 border border-slate-800/60">
+            <div class="text-xs text-slate-400 font-semibold">Tabamused</div>
+            <div id="metricHits" class="font-display font-bold text-base sm:text-lg text-emerald-400 mt-0.5">0 / 0</div>
+          </div>
+          <div class="bg-slate-900/50 rounded-xl p-2.5 border border-slate-800/60">
+            <div class="text-xs text-slate-400 font-semibold">Hajuvus (Max)</div>
+            <div id="metricSpread" class="font-display font-bold text-base sm:text-lg text-white mt-0.5">0.0 mm</div>
+          </div>
+          <div class="bg-slate-900/50 rounded-xl p-2.5 border border-slate-800/60">
+            <div class="text-xs text-slate-400 font-semibold">Tsentrist</div>
+            <div id="metricMpiDist" class="font-display font-bold text-base sm:text-lg text-pink-400 mt-0.5">0.0 mm</div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- Toast Notification Banner -->
+  <div id="toastBanner" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none bg-slate-900 border-2 border-est-blue text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3">
+    <span class="w-3 h-3 rounded-full bg-est-blue animate-ping"></span>
+    <span id="toastMessage" class="text-sm font-bold">Teade</span>
+  </div>
+
+  <!-- Application Logic -->
+  <script>
+    // =========================================================================
+    // STATE & CONSTANTS
+    // =========================================================================
+    const STORAGE_KEY = 'tt_biathlon_saved_series_v5';
+    const REMOVED_ATHLETES = ['susan külm'];
+    const MAX_SHOTS = 8;
+    const CALIBER_RADIUS_MM = 2.8;   // 5.6mm .22 LR bullet radius in mm
+    const PRONE_RADIUS_MM = 22.5;    // 45mm diameter prone hit zone
+    const STANDING_RADIUS_MM = 57.5; // 115mm diameter standing hit zone
+    const WIND_DRIFT_MM_PER_MS = 8.0;
+    const VERTICAL_WIND_FACTOR = 2.2;
+
+    let appState = {
+      position: 'prone',       // 'prone' (Lamades 45mm) | 'standing' (Püsti 115mm)
+      showPaperRings: true,    // Show 1-8 zeroing rings
+      targetZoomed: false,     // 1x (-105..105) vs 2x (-58..58) zoom for phone touchscreens
+      clickStepMm: 2.5,        // 2.5 mm/click or 3.0 mm/click at 50m
+      windDir: 9,              // Clock hour 1..12 (where wind blows FROM), or 0 for calm
+      lastNonZeroWindDir: 9,   // Restored automatically when dragging speed slider up from 0
+      windSpeed: 1.5,          // Wind speed in m/s (0.0 to 12.0)
+      activeShots: [],         // Array of { x: mm, y: mm }
+      comparisonSeries: null,  // Saved series object overlaid in yellow (#FFD700)
+      savedSeries: []          // Stored in localStorage
+    };
+
+    // Touch / Pointer Dragging State on Target SVG
+    let pointerState = {
+      isDown: false,
+      pointerId: null,
+      draggingShotIndex: -1, // -1 = placing a new shot; >= 0 = repositioning an existing shot
+      currentX: 0,
+      currentY: 0
+    };
+
+    const clockHourDescriptions = {
+      0:  'Tuulevaikus',
+      12: 'Vastutuul',
+      1:  'Eest paremalt',
+      2:  'Eest paremalt',
+      3:  'Paremalt',
+      4:  'Tagant paremalt',
+      5:  'Tagant paremalt',
+      6:  'Taganttuul',
+      7:  'Tagant vasakult',
+      8:  'Eest vasakult',
+      9:  'Vasakult',
+      10: 'Eest vasakult',
+      11: 'Eest vasakult'
+    };
+
+    // =========================================================================
+    // INITIALIZATION
+    // =========================================================================
+    window.addEventListener('DOMContentLoaded', () => {
+      initWindClockDial();
+      loadSavedSeriesFromStorage();
+      setupTargetTouchListeners();
+      syncWindSpeedInputs(appState.windSpeed);
+      updateWindDisplay();
+      renderAll();
+    });
+
+    function formatEstonianDateTime(dateObj) {
+      const dd = String(dateObj.getDate()).padStart(2, '0');
+      const mm = String(dateObj.getMonth() + 1).padStart(2, '0');
+      const yyyy = dateObj.getFullYear();
+      const hh = String(dateObj.getHours()).padStart(2, '0');
+      const min = String(dateObj.getMinutes()).padStart(2, '0');
+      const ss = String(dateObj.getSeconds()).padStart(2, '0');
+      return `${dd}.${mm}.${yyyy} ${hh}:${min}:${ss}`;
+    }
+
+    function loadSavedSeriesFromStorage() {
+      try {
+        ['tt_biathlon_saved_series_v1', 'tt_biathlon_saved_series_v2', 'tt_biathlon_saved_series_v3', 'tt_biathlon_saved_series_v4'].forEach(k => localStorage.removeItem(k));
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed)) {
+            appState.savedSeries = parsed.filter(item => {
+              const name = String(item.athlete || '').trim().toLowerCase();
+              return !REMOVED_ATHLETES.includes(name);
+            });
+          }
+        }
+      } catch (e) {
+        console.error('Viga localStorage lugemisel:', e);
+        appState.savedSeries = [];
+      }
+
+      if (!appState.savedSeries || appState.savedSeries.length === 0) {
+        appState.savedSeries = [
+          {
+            id: 'sample-1',
+            athlete: 'Tuuli Tomingas',
+            position: 'prone',
+            timestamp: '15.11.2026 10:15:22',
+            windDir: 9,
+            windSpeed: 1.5,
+            wind: '🚩 Kella 9 • 1.5 m/s',
+            notes: 'Lapua Polar Biathlon • Pealelaskmine 1. seeria',
+            shots: [
+              { x: -8.2, y: -6.4 },
+              { x: -11.5, y: -4.1 },
+              { x: -6.0, y: -9.2 },
+              { x: -9.4, y: -3.5 },
+              { x: -7.8, y: -7.0 }
+            ]
+          },
+          {
+            id: 'sample-2',
+            athlete: 'Hanna-Brita Kaasik',
+            position: 'standing',
+            timestamp: '15.11.2026 09:42:10',
+            windDir: 3,
+            windSpeed: 3.5,
+            wind: '🚩 Kella 3 • 3.5 m/s',
+            notes: 'Komplekstreening • Püsti kiirlaskmine',
+            shots: [
+              { x: 14.0, y: -18.5 },
+              { x: -22.4, y: 12.0 },
+              { x: 8.5, y: 24.2 },
+              { x: -11.0, y: -8.0 },
+              { x: 31.0, y: 5.5 }
+            ]
+          },
+          {
+            id: 'sample-3',
+            athlete: 'Karl Rasmus Tiislar',
+            position: 'prone',
+            timestamp: '14.11.2026 15:20:05',
+            windDir: 0,
+            windSpeed: 0.0,
+            wind: '🚩 Kella 0 • 0.0 m/s',
+            notes: 'Otepää • Kontrolltreening lamades',
+            shots: [
+              { x: 3.2, y: 4.1 },
+              { x: -2.5, y: 6.0 },
+              { x: 5.0, y: -1.8 },
+              { x: 1.4, y: 3.5 },
+              { x: -1.8, y: 2.0 }
+            ]
+          }
+        ];
+        persistSavedSeries();
+      }
+    }
+
+    function persistSavedSeries() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appState.savedSeries));
+      } catch (e) {
+        console.error('Salvestamine ebaõnnestus:', e);
+      }
+    }
+
+    // =========================================================================
+    // INTERACTIVE 12-HOUR BIATHLON WIND CLOCK & TOUCH SLIDER
+    // =========================================================================
+    function initWindClockDial() {
+      const group = document.getElementById('clockHoursGroup');
+      if (!group) return;
+      group.innerHTML = '';
+
+      const radius = 73;
+      for (let h = 1; h <= 12; h++) {
+        const angleRad = ((h * 30 - 90) * Math.PI) / 180;
+        const cx = Math.cos(angleRad) * radius;
+        const cy = Math.sin(angleRad) * radius;
+
+        const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        g.setAttribute('class', 'cursor-pointer');
+        g.addEventListener('pointerdown', (e) => {
+          e.preventDefault();
+          setWindDir(h);
+        });
+
+        // Invisible oversized touch target circle (r=18) for easy finger tapping
+        const hitZone = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        hitZone.setAttribute('cx', cx.toFixed(1));
+        hitZone.setAttribute('cy', cy.toFixed(1));
+        hitZone.setAttribute('r', '18');
+        hitZone.setAttribute('fill', 'transparent');
+
+        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circle.setAttribute('id', `clockHourBtn-${h}`);
+        circle.setAttribute('cx', cx.toFixed(1));
+        circle.setAttribute('cy', cy.toFixed(1));
+        circle.setAttribute('r', h % 3 === 0 ? '14.5' : '12.5');
+        circle.setAttribute('fill', '#0F172A');
+        circle.setAttribute('stroke', '#334155');
+        circle.setAttribute('stroke-width', '1.8');
+
+        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        text.setAttribute('id', `clockHourTxt-${h}`);
+        text.setAttribute('x', cx.toFixed(1));
+        text.setAttribute('y', cy.toFixed(1));
+        text.setAttribute('text-anchor', 'middle');
+        text.setAttribute('dominant-baseline', 'central');
+        text.setAttribute('font-family', 'Chakra Petch, sans-serif');
+        text.setAttribute('font-weight', '700');
+        text.setAttribute('font-size', h % 3 === 0 ? '11' : '9.5');
+        text.setAttribute('fill', '#CBD5E1');
+        text.setAttribute('pointer-events', 'none');
+        text.textContent = String(h);
+
+        g.appendChild(hitZone);
+        g.appendChild(circle);
+        g.appendChild(text);
+        group.appendChild(g);
+      }
+    }
+
+    function setWindDir(clockHour) {
+      const hour = Number(clockHour);
+      appState.windDir = hour;
+      if (hour > 0) {
+        appState.lastNonZeroWindDir = hour;
+      }
+      if (hour === 0) {
+        appState.windSpeed = 0;
+        syncWindSpeedInputs(0);
+      } else if (appState.windSpeed === 0) {
+        appState.windSpeed = 1.5;
+        syncWindSpeedInputs(1.5);
+      }
+      updateWindDisplay();
+    }
+
+    function stepWindSpeed(delta) {
+      const next = Math.max(0, Math.min(12, Math.round((appState.windSpeed + delta) * 10) / 10));
+      setWindSpeed(next);
+    }
+
+    function setWindSpeed(val) {
+      let speed = parseFloat(val);
+      if (isNaN(speed)) speed = 0;
+      speed = Math.max(0, Math.min(12, Math.round(speed * 10) / 10));
+      appState.windSpeed = speed;
+
+      if (speed > 0 && appState.windDir === 0) {
+        appState.windDir = appState.lastNonZeroWindDir || 9;
+      }
+
+      syncWindSpeedInputs(speed);
+      updateWindDisplay();
+    }
+
+    function syncWindSpeedInputs(speed) {
+      const slider = document.getElementById('inputWindSpeedSlider');
+      const numInput = document.getElementById('inputWindSpeedNumber');
+      const labelVal = document.getElementById('windSpeedSliderValue');
+
+      if (slider) {
+        slider.value = speed;
+        const pct = Math.min(100, Math.max(0, (speed / 12) * 100));
+        let activeColor = '#0072CE';
+        if (speed >= 6.0) activeColor = '#EF4444';
+        else if (speed >= 3.5) activeColor = '#F59E0B';
+        else if (speed >= 1.5) activeColor = '#0EA5E9';
+        slider.style.background = `linear-gradient(90deg, ${activeColor} 0%, ${activeColor} ${pct}%, #1E293B ${pct}%, #1E293B 100%)`;
+      }
+      if (numInput) numInput.value = speed.toFixed(1);
+      if (labelVal) labelVal.textContent = `${speed.toFixed(1)} m/s`;
+
+      const presets = [
+        { id: 'btnPreset0', val: 0 },
+        { id: 'btnPreset15', val: 1.5 },
+        { id: 'btnPreset30', val: 3.0 },
+        { id: 'btnPreset50', val: 5.0 },
+        { id: 'btnPreset70', val: 7.0 }
+      ];
+      presets.forEach(p => {
+        const el = document.getElementById(p.id);
+        if (!el) return;
+        const active = (p.val === 7.0 && speed >= 7.0) || (p.val < 7.0 && Math.abs(speed - p.val) < 0.05);
+        el.className = active
+          ? 'min-h-[46px] px-2 py-2 rounded-xl text-xs font-bold bg-est-blue text-white border-2 border-sky-400 transition active:scale-95'
+          : 'min-h-[46px] px-2 py-2 rounded-xl text-xs font-bold bg-slate-900 hover:bg-slate-800 text-slate-300 border-2 border-slate-700 transition active:scale-95';
+      });
+    }
+
+    function computeWindDriftTelemetry(windDir, windSpeed, clickStepMm) {
+      if (windDir === 0 || windSpeed <= 0) {
+        return {
+          isCalm: true,
+          flowAngleDeg: 0,
+          crossWindMs: 0,
+          driftXmm: 0,
+          driftYmm: 0,
+          compClicks: 0
+        };
+      }
+
+      const fromAngleDeg = (windDir % 12) * 30;
+      const fromRad = (fromAngleDeg * Math.PI) / 180;
+      const crossFactor = -Math.sin(fromRad);
+      const headFactor = Math.cos(fromRad);
+
+      const crossWindMs = windSpeed * Math.abs(crossFactor);
+      const driftXmm = windSpeed * crossFactor * WIND_DRIFT_MM_PER_MS;
+      const driftYmm = windSpeed * headFactor * VERTICAL_WIND_FACTOR;
+      const compClicks = Math.round(Math.abs(driftXmm) / clickStepMm);
+      const flowAngleDeg = (fromAngleDeg + 180) % 360;
+
+      return {
+        isCalm: false,
+        flowAngleDeg,
+        crossWindMs,
+        driftXmm,
+        driftYmm,
+        compClicks
+      };
+    }
+
+    function formatWindBadgeString(windDir, windSpeed) {
+      if (!windDir || windSpeed <= 0) {
+        return '🚩 Kella 0 • 0.0 m/s';
+      }
+      return `🚩 Kella ${windDir} • ${Number(windSpeed).toFixed(1)} m/s`;
+    }
+
+    function updateWindDisplay() {
+      const dir = appState.windDir;
+      const speed = appState.windSpeed;
+      const isCalm = dir === 0 || speed <= 0;
+      const telemetry = computeWindDriftTelemetry(dir, speed, appState.clickStepMm);
+
+      for (let h = 1; h <= 12; h++) {
+        const btn = document.getElementById(`clockHourBtn-${h}`);
+        const txt = document.getElementById(`clockHourTxt-${h}`);
+        if (!btn || !txt) continue;
+        if (!isCalm && h === dir) {
+          btn.setAttribute('fill', '#0072CE');
+          btn.setAttribute('stroke', '#38BDF8');
+          btn.setAttribute('stroke-width', '2.5');
+          txt.setAttribute('fill', '#FFFFFF');
+        } else {
+          btn.setAttribute('fill', '#0F172A');
+          btn.setAttribute('stroke', '#334155');
+          btn.setAttribute('stroke-width', '1.8');
+          txt.setAttribute('fill', '#CBD5E1');
+        }
+      }
+
+      const calmCircle = document.getElementById('clockCenterCalmCircle');
+      if (calmCircle) {
+        calmCircle.setAttribute('fill', isCalm ? '#0072CE' : '#0F172A');
+        calmCircle.setAttribute('stroke', isCalm ? '#38BDF8' : '#334155');
+      }
+
+      const clockVec = document.getElementById('clockWindVectorGroup');
+      if (clockVec) {
+        if (isCalm) {
+          clockVec.setAttribute('opacity', '0.15');
+        } else {
+          const svgRot = telemetry.flowAngleDeg - 90;
+          clockVec.setAttribute('opacity', '1');
+          clockVec.setAttribute('transform', `rotate(${svgRot})`);
+        }
+      }
+
+      const liftRatio = Math.min(1, speed / 7.0);
+      const flagDegFromHoriz = Math.round(85 - liftRatio * 81);
+      const flagAngleGroup = document.getElementById('rangeFlagAngleGroup');
+      const flagFlutterGroup = document.getElementById('rangeFlagFlutterGroup');
+      const flagStateText = document.getElementById('rangeFlagStateText');
+      const flagPivot = document.getElementById('rangeFlagPivot');
+
+      const blowsLeft = !isCalm && (dir >= 1 && dir <= 5);
+      if (flagPivot) {
+        flagPivot.setAttribute('transform', blowsLeft ? 'translate(88, 18) scale(-1, 1)' : 'translate(42, 18) scale(1, 1)');
+      }
+      if (flagAngleGroup) {
+        flagAngleGroup.setAttribute('transform', `rotate(${flagDegFromHoriz})`);
+      }
+      if (flagFlutterGroup) {
+        const dur = isCalm ? '3.0s' : `${Math.max(0.22, 0.95 - liftRatio * 0.65).toFixed(2)}s`;
+        flagFlutterGroup.style.setProperty('--flutter-dur', dur);
+      }
+      if (flagStateText) {
+        if (isCalm) flagStateText.textContent = 'Tuulevaikus (lipp ripub)';
+        else if (speed < 2.5) flagStateText.textContent = `Kerge tuul (~${90 - flagDegFromHoriz}° tõus)`;
+        else if (speed < 5.0) flagStateText.textContent = `Keskmine tuul (~${90 - flagDegFromHoriz}° tõus)`;
+        else flagStateText.textContent = `Tugev tuul (horisontaalne!)`;
+      }
+
+      const desc = isCalm ? 'Tuulevaikus' : (clockHourDescriptions[dir] || `Kell ${dir}`);
+      document.getElementById('windSummaryPill').textContent = formatWindBadgeString(isCalm ? 0 : dir, isCalm ? 0 : speed);
+      document.getElementById('windAngleDesc').textContent = desc;
+      document.getElementById('windDirDetailText').textContent = isCalm ? 'Kell 0 (Vaikus)' : `Kell ${dir} (${desc})`;
+      document.getElementById('windSpeedDetailText').textContent = `${(isCalm ? 0 : speed).toFixed(1)} m/s`;
+
+      const crossEl = document.getElementById('windCrossComponentText');
+      const driftMmEl = document.getElementById('windDriftMmText');
+      const vertDriftEl = document.getElementById('windVertDriftMmText');
+      const compClicksEl = document.getElementById('windCompClicksText');
+      const holdoverEl = document.getElementById('windHoldoverHint');
+
+      if (isCalm) {
+        crossEl.textContent = 'Külg: 0.0 m/s';
+        driftMmEl.textContent = '0.0 mm (Triiv puudub)';
+        vertDriftEl.textContent = 'Kõrgustriiv: 0.0 mm';
+        compClicksEl.textContent = '0 klikki (Parandust pole)';
+        holdoverEl.textContent = 'Sihi otse keskele';
+      } else {
+        crossEl.textContent = `Külg: ${telemetry.crossWindMs.toFixed(1)} m/s`;
+        if (Math.abs(telemetry.driftXmm) < 0.8) {
+          driftMmEl.textContent = '0.0 mm (Piki tiiru)';
+        } else {
+          const driftDir = telemetry.driftXmm > 0 ? 'paremale →' : '← vasakule';
+          driftMmEl.textContent = `${Math.abs(telemetry.driftXmm).toFixed(1)} mm ${driftDir}`;
+        }
+
+        const vertDir = telemetry.driftYmm >= 0 ? 'alla ↓' : 'üles ↑';
+        vertDriftEl.textContent = `Kõrgustriiv: ${Math.abs(telemetry.driftYmm).toFixed(1)} mm ${vertDir}`;
+
+        if (telemetry.compClicks === 0) {
+          compClicksEl.textContent = '0 klikki (Paranduseta)';
+          holdoverEl.textContent = `Tuul kella ${dir} suunast`;
+        } else {
+          const clickDirText = telemetry.driftXmm > 0 ? 'VASAKULE ↺' : 'PAREMALE ↻';
+          compClicksEl.textContent = `${telemetry.compClicks} klikki ${clickDirText}`;
+          holdoverEl.textContent = `Või sihi kella ${dir} suunas`;
+        }
+      }
+
+      const arrowEl = document.getElementById('targetWindArrow');
+      const clockBadgeEl = document.getElementById('targetWindClockBadge');
+      const labelEl = document.getElementById('targetWindLabel');
+      const svgArrow = document.getElementById('svgWindVectorArrow');
+      const svgLine1 = document.getElementById('svgWindBadgeLine1');
+      const svgLine2 = document.getElementById('svgWindBadgeLine2');
+
+      if (isCalm) {
+        arrowEl.style.transform = 'rotate(0deg)';
+        arrowEl.style.opacity = '0.35';
+        clockBadgeEl.textContent = 'Kell 0';
+        labelEl.textContent = '0.0 m/s • Vaikus';
+        if (svgArrow) svgArrow.setAttribute('transform', 'rotate(0)');
+        if (svgLine1) svgLine1.textContent = 'TUUL: KELL 0';
+        if (svgLine2) svgLine2.textContent = '0.0 m/s (Vaikus)';
+      } else {
+        arrowEl.style.transform = `rotate(${telemetry.flowAngleDeg}deg)`;
+        arrowEl.style.opacity = '1';
+        clockBadgeEl.textContent = `Kell ${dir}`;
+        labelEl.textContent = `${speed.toFixed(1)} m/s • ${desc}`;
+        if (svgArrow) svgArrow.setAttribute('transform', `rotate(${telemetry.flowAngleDeg})`);
+        if (svgLine1) svgLine1.textContent = `TUUL: KELL ${dir}`;
+        if (svgLine2) svgLine2.textContent = `${speed.toFixed(1)} m/s (${desc})`;
+      }
+    }
+
+    // =========================================================================
+    // TOUCHSCREEN SVG TARGET PLOTTING, LIVE LOUPE & DRAG-TO-MOVE
+    // =========================================================================
+    function toggleTargetZoom() {
+      appState.targetZoomed = !appState.targetZoomed;
+      const svg = document.getElementById('biathlonSvg');
+      const zoomText = document.getElementById('zoomBtnText');
+      const badge = document.getElementById('svgEmbeddedWindBadge');
+
+      if (appState.targetZoomed) {
+        svg.setAttribute('viewBox', '-60 -60 120 120');
+        zoomText.textContent = 'Suum: 2x';
+        if (badge) badge.setAttribute('display', 'none');
+        showToast('2x täpsussuum sees');
+      } else {
+        svg.setAttribute('viewBox', '-105 -105 210 210');
+        zoomText.textContent = 'Suum: 1x';
+        if (badge) badge.removeAttribute('display');
+      }
+    }
+
+    function clientToSvgCoords(svg, clientX, clientY, pointerType) {
+      const pt = svg.createSVGPoint();
+      pt.x = clientX;
+      pt.y = clientY;
+      const svgP = pt.matrixTransform(svg.getScreenCTM().inverse());
+      // When touching on mobile/tablet, apply a slight upward offset (-5mm) if dragging so the finger pad doesn't obscure the exact center
+      const limit = appState.targetZoomed ? 56 : 95;
+      const x = Math.max(-limit, Math.min(limit, Number(svgP.x.toFixed(1))));
+      const y = Math.max(-limit, Math.min(limit, Number(svgP.y.toFixed(1))));
+      return { x, y };
+    }
+
+    function updateTouchPreview(x, y, shotNumber) {
+      const layer = document.getElementById('touchPreviewLayer');
+      const banner = document.getElementById('touchLiveBanner');
+      const bannerText = document.getElementById('touchLiveText');
+      const calloutText = document.getElementById('touchPreviewCalloutText');
+      if (!layer) return;
+
+      layer.classList.remove('hidden');
+      layer.setAttribute('transform', `translate(${x}, ${y})`);
+
+      const hit = isShotHit({ x, y }, appState.position);
+      const statusWord = hit ? 'TABAMUS' : 'MÖÖDA';
+      if (calloutText) {
+        calloutText.textContent = `#${shotNumber} ${statusWord}`;
+        calloutText.setAttribute('fill', hit ? '#4ADE80' : '#FCA5A5');
+      }
+      if (banner && bannerText) {
+        banner.classList.remove('hidden');
+        banner.classList.add('flex');
+        bannerText.textContent = `Lask #${shotNumber}: ${statusWord} (${Math.hypot(x, y).toFixed(1)} mm tsentrist)`;
+      }
+    }
+
+    function hideTouchPreview() {
+      const layer = document.getElementById('touchPreviewLayer');
+      const banner = document.getElementById('touchLiveBanner');
+      if (layer) layer.classList.add('hidden');
+      if (banner) {
+        banner.classList.add('hidden');
+        banner.classList.remove('flex');
+      }
+    }
+
+    function setupTargetTouchListeners() {
+      const svg = document.getElementById('biathlonSvg');
+
+      svg.addEventListener('pointerdown', (evt) => {
+        if (evt.button !== 0 && evt.pointerType === 'mouse') return;
+        evt.preventDefault();
+
+        const coords = clientToSvgCoords(svg, evt.clientX, evt.clientY, evt.pointerType);
+
+        // Check if finger tapped an existing active shot (within 10mm radius) to drag/reposition it
+        let hitExistingIdx = -1;
+        for (let i = appState.activeShots.length - 1; i >= 0; i--) {
+          const s = appState.activeShots[i];
+          if (Math.hypot(s.x - coords.x, s.y - coords.y) <= 9.5) {
+            hitExistingIdx = i;
+            break;
+          }
+        }
+
+        if (hitExistingIdx === -1 && appState.activeShots.length >= MAX_SHOTS) {
+          showToast('Maksimaalselt 8 lasku seerias! Vajuta "Uus seeria" või "Salvesta".');
+          return;
+        }
+
+        pointerState.isDown = true;
+        pointerState.pointerId = evt.pointerId;
+        pointerState.draggingShotIndex = hitExistingIdx;
+        pointerState.currentX = coords.x;
+        pointerState.currentY = coords.y;
+
+        try {
+          svg.setPointerCapture(evt.pointerId);
+        } catch (err) {}
+
+        const shotNum = hitExistingIdx >= 0 ? (hitExistingIdx + 1) : (appState.activeShots.length + 1);
+        updateTouchPreview(coords.x, coords.y, shotNum);
+      });
+
+      svg.addEventListener('pointermove', (evt) => {
+        if (!pointerState.isDown || evt.pointerId !== pointerState.pointerId) return;
+        evt.preventDefault();
+
+        const coords = clientToSvgCoords(svg, evt.clientX, evt.clientY, evt.pointerType);
+        pointerState.currentX = coords.x;
+        pointerState.currentY = coords.y;
+
+        if (pointerState.draggingShotIndex >= 0) {
+          appState.activeShots[pointerState.draggingShotIndex] = { x: coords.x, y: coords.y };
+          renderTarget();
+          renderAnalytics();
+        }
+
+        const shotNum = pointerState.draggingShotIndex >= 0
+          ? (pointerState.draggingShotIndex + 1)
+          : (appState.activeShots.length + 1);
+        updateTouchPreview(coords.x, coords.y, shotNum);
+      });
+
+      const finishPointer = (evt) => {
+        if (!pointerState.isDown || evt.pointerId !== pointerState.pointerId) return;
+        evt.preventDefault();
+
+        if (pointerState.draggingShotIndex === -1 && appState.activeShots.length < MAX_SHOTS) {
+          appState.activeShots.push({
+            x: pointerState.currentX,
+            y: pointerState.currentY
+          });
+        }
+
+        pointerState.isDown = false;
+        pointerState.pointerId = null;
+        pointerState.draggingShotIndex = -1;
+        hideTouchPreview();
+        renderAll();
+      };
+
+      svg.addEventListener('pointerup', finishPointer);
+      svg.addEventListener('pointercancel', () => {
+        pointerState.isDown = false;
+        pointerState.pointerId = null;
+        pointerState.draggingShotIndex = -1;
+        hideTouchPreview();
+        renderAll();
+      });
+    }
+
+    function isShotHit(shot, positionMode) {
+      const distFromCenter = Math.hypot(shot.x, shot.y);
+      const zoneRadius = positionMode === 'prone' ? PRONE_RADIUS_MM : STANDING_RADIUS_MM;
+      return distFromCenter <= (zoneRadius + CALIBER_RADIUS_MM * 0.65);
+    }
+
+    function computeAnalytics(shots, positionMode) {
+      const count = shots.length;
+      if (count === 0) {
+        return { count: 0, hits: 0, mpiX: 0, mpiY: 0, mpiDist: 0, maxSpread: 0, boundingRadius: 0 };
+      }
+
+      let sumX = 0, sumY = 0, hits = 0;
+      shots.forEach(s => {
+        sumX += s.x;
+        sumY += s.y;
+        if (isShotHit(s, positionMode)) hits++;
+      });
+
+      const mpiX = sumX / count;
+      const mpiY = sumY / count;
+      const mpiDist = Math.hypot(mpiX, mpiY);
+
+      let maxSpread = 0;
+      for (let i = 0; i < count; i++) {
+        for (let j = i + 1; j < count; j++) {
+          const d = Math.hypot(shots[i].x - shots[j].x, shots[i].y - shots[j].y);
+          if (d > maxSpread) maxSpread = d;
+        }
+      }
+
+      let boundingRadius = 0;
+      shots.forEach(s => {
+        const d = Math.hypot(s.x - mpiX, s.y - mpiY);
+        if (d > boundingRadius) boundingRadius = d;
+      });
+
+      return { count, hits, mpiX, mpiY, mpiDist, maxSpread, boundingRadius };
+    }
+
+    // =========================================================================
+    // UI ACTIONS & 5-BUTTON BAR CONTROLS
+    // =========================================================================
+    function startNewSeries() {
+      appState.activeShots = [];
+      appState.comparisonSeries = null;
+      const notesEl = document.getElementById('inputNotes');
+      if (notesEl) notesEl.value = '';
+      renderAll();
+      showToast('➕ Uus seeria alustatud — märklaud on puhas!');
+    }
+
+    function setPositionMode(mode) {
+      appState.position = mode;
+      const btnProne = document.getElementById('btnPosProne');
+      const btnStanding = document.getElementById('btnPosStanding');
+      const hint = document.getElementById('activeZoneHint');
+
+      if (mode === 'prone') {
+        btnProne.className = 'min-h-[46px] px-3.5 py-2 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2 bg-est-blue text-white shadow active:scale-95';
+        btnStanding.className = 'min-h-[46px] px-3.5 py-2 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2 text-slate-300 hover:text-white active:scale-95';
+        hint.textContent = 'Lamades: Ø 45 mm';
+      } else {
+        btnStanding.className = 'min-h-[46px] px-3.5 py-2 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2 bg-est-blue text-white shadow active:scale-95';
+        btnProne.className = 'min-h-[46px] px-3.5 py-2 rounded-xl text-sm font-bold transition-all flex items-center justify-center gap-2 text-slate-300 hover:text-white active:scale-95';
+        hint.textContent = 'Püsti: Ø 115 mm';
+      }
+
+      renderAll();
+    }
+
+    function togglePaperRings() {
+      appState.showPaperRings = !appState.showPaperRings;
+      document.getElementById('paperRingsLabel').textContent =
+        appState.showPaperRings ? 'Pabermärklaud: SEES' : 'Pabermärklaud: VÄLJAS';
+      renderTarget();
+    }
+
+    function setClickStep(stepMm) {
+      appState.clickStepMm = stepMm;
+      const btn25 = document.getElementById('btnClick25');
+      const btn30 = document.getElementById('btnClick30');
+      if (stepMm === 2.5) {
+        btn25.className = 'min-h-[38px] px-3 py-1 rounded-lg text-xs font-bold bg-est-blue text-white transition active:scale-95';
+        btn30.className = 'min-h-[38px] px-3 py-1 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition active:scale-95';
+      } else {
+        btn30.className = 'min-h-[38px] px-3 py-1 rounded-lg text-xs font-bold bg-est-blue text-white transition active:scale-95';
+        btn25.className = 'min-h-[38px] px-3 py-1 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition active:scale-95';
+      }
+      updateWindDisplay();
+      renderAnalytics();
+    }
+
+    function undoLastShot() {
+      if (appState.activeShots.length === 0) return;
+      appState.activeShots.pop();
+      renderAll();
+    }
+
+    function removeShotByIndex(idx) {
+      appState.activeShots.splice(idx, 1);
+      renderAll();
+    }
+
+    function clearActiveSeries() {
+      if (appState.activeShots.length === 0) return;
+      appState.activeShots = [];
+      renderAll();
+      showToast('Aktiivsed lasud puhastatud');
+    }
+
+    function handleAthleteChange() {
+      const sel = document.getElementById('selectAthlete').value;
+      const customWrap = document.getElementById('customAthleteWrapper');
+      if (sel === 'Muu') {
+        customWrap.classList.remove('hidden');
+      } else {
+        customWrap.classList.add('hidden');
+      }
+    }
+
+    function getSelectedAthleteName() {
+      const sel = document.getElementById('selectAthlete').value;
+      if (sel === 'Muu') {
+        const custom = document.getElementById('inputCustomAthlete').value.trim();
+        return custom || 'Külaline';
+      }
+      return sel;
+    }
+
+    // =========================================================================
+    // RENDERING TARGET, SHOTS, MPI & ANALYTICS
+    // =========================================================================
+    function renderAll() {
+      renderTarget();
+      renderAnalytics();
+      renderShotPills();
+      renderSavedSeriesList();
+
+      const hasShots = appState.activeShots.length > 0;
+      document.getElementById('btnUndo').disabled = !hasShots;
+      document.getElementById('btnClear').disabled = !hasShots;
+      document.getElementById('activeShotCountLabel').textContent = appState.activeShots.length;
+    }
+
+    function renderTarget() {
+      const ringGroups = ['outerPaperRingsGroup', 'innerPaperRingsGroup', 'centerPaperRingsGroup', 'paperRingNumbers'];
+      ringGroups.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = appState.showPaperRings ? 'block' : 'none';
+      });
+
+      const proneCircle = document.getElementById('proneZoneCircle');
+      const standingCircle = document.getElementById('standingZoneCircle');
+
+      if (appState.position === 'prone') {
+        proneCircle.setAttribute('stroke', '#38BDF8');
+        proneCircle.setAttribute('stroke-width', '1.3');
+        standingCircle.setAttribute('stroke', '#1E293B');
+        standingCircle.setAttribute('stroke-width', '0.8');
+      } else {
+        proneCircle.setAttribute('stroke', '#475569');
+        proneCircle.setAttribute('stroke-width', '0.6');
+        standingCircle.setAttribute('stroke', '#38BDF8');
+        standingCircle.setAttribute('stroke-width', '1.5');
+      }
+
+      // Comparison Series (Yellow #FFD700 markers)
+      const compLayer = document.getElementById('comparisonShotsLayer');
+      compLayer.innerHTML = '';
+      const compLegend = document.getElementById('compareLegendPill');
+
+      if (appState.comparisonSeries && appState.comparisonSeries.shots) {
+        compLegend.classList.remove('hidden');
+        compLegend.classList.add('inline-flex');
+        document.getElementById('compareSeriesTitle').textContent =
+          `${appState.comparisonSeries.timestamp} • ${appState.comparisonSeries.athlete}`;
+
+        appState.comparisonSeries.shots.forEach((shot, i) => {
+          compLayer.appendChild(createShotSvgGroup(shot.x, shot.y, i + 1, '#FFD700', '#090D16', true));
+        });
+      } else {
+        compLegend.classList.add('hidden');
+        compLegend.classList.remove('inline-flex');
+      }
+
+      // Active Series (Vibrant Pink #FF2A85 markers)
+      const activeLayer = document.getElementById('activeShotsLayer');
+      activeLayer.innerHTML = '';
+      appState.activeShots.forEach((shot, i) => {
+        activeLayer.appendChild(createShotSvgGroup(shot.x, shot.y, i + 1, '#FF2A85', '#FFFFFF', false));
+      });
+
+      // MPI Crosshair & Dispersion Circle
+      const mpiLayer = document.getElementById('mpiLayer');
+      mpiLayer.innerHTML = '';
+      const showMPI = document.getElementById('chkShowMPI').checked;
+
+      if (showMPI && appState.activeShots.length >= 2) {
+        const stats = computeAnalytics(appState.activeShots, appState.position);
+
+        const groupCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        groupCircle.setAttribute('cx', stats.mpiX);
+        groupCircle.setAttribute('cy', stats.mpiY);
+        groupCircle.setAttribute('r', Math.max(4, stats.boundingRadius + CALIBER_RADIUS_MM));
+        groupCircle.setAttribute('fill', 'rgba(255, 42, 133, 0.08)');
+        groupCircle.setAttribute('stroke', '#FF2A85');
+        groupCircle.setAttribute('stroke-width', '0.7');
+        groupCircle.setAttribute('stroke-dasharray', '2.5,2');
+        mpiLayer.appendChild(groupCircle);
+
+        const crossSize = 4.5;
+        const hLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        hLine.setAttribute('x1', stats.mpiX - crossSize);
+        hLine.setAttribute('y1', stats.mpiY);
+        hLine.setAttribute('x2', stats.mpiX + crossSize);
+        hLine.setAttribute('y2', stats.mpiY);
+        hLine.setAttribute('stroke', '#38BDF8');
+        hLine.setAttribute('stroke-width', '1.1');
+
+        const vLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        vLine.setAttribute('x1', stats.mpiX);
+        vLine.setAttribute('y1', stats.mpiY - crossSize);
+        vLine.setAttribute('x2', stats.mpiX);
+        vLine.setAttribute('y2', stats.mpiY + crossSize);
+        vLine.setAttribute('stroke', '#38BDF8');
+        vLine.setAttribute('stroke-width', '1.1');
+
+        const centerDot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        centerDot.setAttribute('cx', stats.mpiX);
+        centerDot.setAttribute('cy', stats.mpiY);
+        centerDot.setAttribute('r', '1.4');
+        centerDot.setAttribute('fill', '#38BDF8');
+
+        mpiLayer.appendChild(hLine);
+        mpiLayer.appendChild(vLine);
+        mpiLayer.appendChild(centerDot);
+      }
+    }
+
+    function createShotSvgGroup(x, y, number, fillHex, textHex, isComparison) {
+      const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+      g.setAttribute('class', 'shot-marker');
+      if (isComparison) g.setAttribute('opacity', '0.9');
+
+      const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      circle.setAttribute('cx', x);
+      circle.setAttribute('cy', y);
+      circle.setAttribute('r', '6.2');
+      circle.setAttribute('fill', fillHex);
+      circle.setAttribute('stroke', isComparison ? '#0F172A' : '#FFFFFF');
+      circle.setAttribute('stroke-width', '1.0');
+      circle.setAttribute('filter', 'url(#shotShadow)');
+
+      const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      txt.setAttribute('x', x);
+      txt.setAttribute('y', y);
+      txt.setAttribute('text-anchor', 'middle');
+      txt.setAttribute('dominant-baseline', 'central');
+      txt.setAttribute('fill', textHex);
+      txt.setAttribute('font-family', 'Chakra Petch, sans-serif');
+      txt.setAttribute('font-weight', '700');
+      txt.setAttribute('font-size', '6.8');
+      txt.textContent = String(number);
+
+      g.appendChild(circle);
+      g.appendChild(txt);
+      return g;
+    }
+
+    function renderAnalytics() {
+      const stats = computeAnalytics(appState.activeShots, appState.position);
+
+      const hitStr = `${stats.hits} / ${stats.count}`;
+      document.getElementById('targetHitBadge').textContent = hitStr;
+      document.getElementById('metricHits').textContent = hitStr;
+      document.getElementById('metricSpread').textContent = `${stats.maxSpread.toFixed(1)} mm`;
+      document.getElementById('metricMpiDist').textContent = `${stats.mpiDist.toFixed(1)} mm`;
+
+      const horizClicks = Math.round(Math.abs(stats.mpiX) / appState.clickStepMm);
+      const vertClicks = Math.round(Math.abs(stats.mpiY) / appState.clickStepMm);
+
+      const hClicksEl = document.getElementById('diopterHorizClicks');
+      const hDirEl = document.getElementById('diopterHorizDir');
+      const hOffsetEl = document.getElementById('mpiOffsetXText');
+
+      const vClicksEl = document.getElementById('diopterVertClicks');
+      const vDirEl = document.getElementById('diopterVertDir');
+      const vOffsetEl = document.getElementById('mpiOffsetYText');
+
+      if (stats.count === 0) {
+        hClicksEl.textContent = '0';
+        hDirEl.textContent = 'KLIKKI';
+        hOffsetEl.textContent = 'Kõrvalekalle: 0.0 mm';
+        vClicksEl.textContent = '0';
+        vDirEl.textContent = 'KLIKKI';
+        vOffsetEl.textContent = 'Kõrvalekalle: 0.0 mm';
+        return;
+      }
+
+      hClicksEl.textContent = String(horizClicks);
+      hDirEl.textContent = horizClicks === 0 ? 'TSENTRIS' : (stats.mpiX > 0 ? 'VASAKULE ←' : 'PAREMALE →');
+      hOffsetEl.textContent = `Keskkoht: ${Math.abs(stats.mpiX).toFixed(1)} mm ${stats.mpiX >= 0 ? 'paremal' : 'vasakul'}`;
+
+      vClicksEl.textContent = String(vertClicks);
+      vDirEl.textContent = vertClicks === 0 ? 'TSENTRIS' : (stats.mpiY > 0 ? 'ÜLES ↑' : 'ALLA ↓');
+      vOffsetEl.textContent = `Keskkoht: ${Math.abs(stats.mpiY).toFixed(1)} mm ${stats.mpiY >= 0 ? 'all' : 'üleval'}`;
+    }
+
+    function renderShotPills() {
+      const container = document.getElementById('shotPillsContainer');
+      if (appState.activeShots.length === 0) {
+        container.innerHTML = '<span class="text-xs sm:text-sm text-slate-500 italic">Ühtegi lasku pole veel märgitud. Puuduta märklauda!</span>';
+        return;
+      }
+
+      container.innerHTML = '';
+      appState.activeShots.forEach((shot, idx) => {
+        const hit = isShotHit(shot, appState.position);
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.onclick = () => removeShotByIndex(idx);
+        btn.className = `min-h-[42px] px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 border-2 transition active:scale-95 ${
+          hit
+            ? 'bg-pink-500/15 border-pink-500/50 text-pink-100 active:bg-rose-900/60'
+            : 'bg-slate-800 border-slate-600 text-slate-200 active:bg-rose-900/60'
+        }`;
+        btn.innerHTML = `
+          <span class="w-5 h-5 rounded-full bg-est-pink text-white font-display font-bold text-xs flex items-center justify-center">${idx + 1}</span>
+          <span>${hit ? 'Tabamus' : 'Mööda'}</span>
+          <span class="text-xs text-slate-400 ml-0.5">✕</span>
+        `;
+        container.appendChild(btn);
+      });
+    }
+
+    // =========================================================================
+    // SAVING, DROPDOWN POP-UP & COMPARING SERIES
+    // =========================================================================
+    function saveCurrentSeries() {
+      if (appState.activeShots.length === 0) {
+        showToast('Märgi vähemalt 1 lask enne salvestamist!');
+        return;
+      }
+
+      const timestamp = formatEstonianDateTime(new Date());
+      const isCalm = appState.windDir === 0 || appState.windSpeed <= 0;
+      const savedDir = isCalm ? 0 : appState.windDir;
+      const savedSpeed = isCalm ? 0.0 : appState.windSpeed;
+      const windBadge = formatWindBadgeString(savedDir, savedSpeed);
+      const notes = document.getElementById('inputNotes').value.trim() || 'Treeningseeria';
+
+      const newSeries = {
+        id: 'ser-' + Date.now(),
+        athlete: getSelectedAthleteName(),
+        position: appState.position,
+        timestamp: timestamp,
+        windDir: savedDir,
+        windSpeed: savedSpeed,
+        wind: windBadge,
+        notes: notes,
+        shots: JSON.parse(JSON.stringify(appState.activeShots))
+      };
+
+      appState.savedSeries.unshift(newSeries);
+      persistSavedSeries();
+      renderSavedSeriesList();
+      showToast(`💾 Salvestatud: ${newSeries.timestamp}`);
+    }
+
+    function popSelectedDropdownOnTarget(mode) {
+      const dropdown = document.getElementById('savedSeriesDropdown');
+      if (!dropdown || !dropdown.value) {
+        showToast('Vali nimekirjast salvestatud seeria!');
+        return;
+      }
+      const id = dropdown.value;
+      if (mode === 'active') {
+        loadSavedSeriesAsActive(id);
+      } else {
+        const found = appState.savedSeries.find(s => s.id === id);
+        if (found) {
+          appState.comparisonSeries = found;
+          renderAll();
+          showToast(`🎯 Kuvatud märklaual (Kollane): ${found.timestamp}`);
+        }
+      }
+    }
+
+    function loadSavedSeriesAsActive(id) {
+      const found = appState.savedSeries.find(s => s.id === id);
+      if (!found) return;
+
+      appState.activeShots = JSON.parse(JSON.stringify(found.shots));
+      setPositionMode(found.position);
+      if (typeof found.windDir === 'number') appState.windDir = found.windDir;
+      if (typeof found.windSpeed === 'number') {
+        appState.windSpeed = found.windSpeed;
+        syncWindSpeedInputs(found.windSpeed);
+      }
+      updateWindDisplay();
+      document.getElementById('inputNotes').value = found.notes || '';
+      renderAll();
+      showToast(`Laaditud aktiivseks (Roosa): ${found.timestamp}`);
+    }
+
+    function toggleCompareSeries(id) {
+      if (appState.comparisonSeries && appState.comparisonSeries.id === id) {
+        appState.comparisonSeries = null;
+        showToast('Võrdlusseeria eemaldatud');
+      } else {
+        const found = appState.savedSeries.find(s => s.id === id);
+        if (found) {
+          appState.comparisonSeries = found;
+          showToast(`🎯 Võrdluseks valitud: ${found.timestamp}`);
+        }
+      }
+      renderAll();
+    }
+
+    function clearComparison() {
+      appState.comparisonSeries = null;
+      renderAll();
+    }
+
+    function deleteSavedSeries(id) {
+      appState.savedSeries = appState.savedSeries.filter(s => s.id !== id);
+      if (appState.comparisonSeries && appState.comparisonSeries.id === id) {
+        appState.comparisonSeries = null;
+      }
+      persistSavedSeries();
+      renderAll();
+      showToast('Seeria kustutatud');
+    }
+
+    function renderSavedSeriesList() {
+      const listEl = document.getElementById('savedSeriesList');
+      const dropdownEl = document.getElementById('savedSeriesDropdown');
+      const countBadge = document.getElementById('savedCountBadge');
+      countBadge.textContent = String(appState.savedSeries.length);
+
+      const previousDropdownVal = dropdownEl ? dropdownEl.value : '';
+
+      if (appState.savedSeries.length === 0) {
+        if (dropdownEl) {
+          dropdownEl.innerHTML = '<option value="">-- Salvestatud seeriaid pole --</option>';
+        }
+        listEl.innerHTML = `
+          <div class="text-center py-6 text-xs sm:text-sm text-slate-500 border border-dashed border-slate-800 rounded-xl">
+            Salvestatud seeriaid pole. Märgi lasud ja vajuta "Salvesta seeria".
+          </div>
+        `;
+        return;
+      }
+
+      if (dropdownEl) {
+        dropdownEl.innerHTML = '';
+        appState.savedSeries.forEach(item => {
+          const stats = computeAnalytics(item.shots, item.position);
+          const posShort = item.position === 'prone' ? 'Lamades' : 'Püsti';
+          const opt = document.createElement('option');
+          opt.value = item.id;
+          opt.textContent = `🕒 ${item.timestamp} — ${item.athlete} (${posShort} • ${stats.hits}/${stats.count})`;
+          dropdownEl.appendChild(opt);
+        });
+        if (previousDropdownVal && appState.savedSeries.some(s => s.id === previousDropdownVal)) {
+          dropdownEl.value = previousDropdownVal;
+        }
+      }
+
+      listEl.innerHTML = '';
+      appState.savedSeries.forEach(item => {
+        const stats = computeAnalytics(item.shots, item.position);
+        const isComparing = appState.comparisonSeries && appState.comparisonSeries.id === item.id;
+        const posLabel = item.position === 'prone' ? 'Lamades 45mm' : 'Püsti 115mm';
+        const windBadge = item.wind || formatWindBadgeString(item.windDir || 0, item.windSpeed || 0);
+
+        const card = document.createElement('div');
+        card.className = `p-3.5 rounded-2xl border-2 transition flex flex-col gap-2 ${
+          isComparing
+            ? 'bg-amber-500/15 border-amber-400/70'
+            : 'bg-slate-900/85 border-slate-800'
+        }`;
+
+        card.innerHTML = `
+          <div class="flex items-start justify-between gap-2">
+            <div>
+              <div class="text-xs font-display font-bold text-amber-300">🕒 ${escapeHtml(item.timestamp)}</div>
+              <div class="flex flex-wrap items-center gap-1.5 mt-1">
+                <span class="font-bold text-sm text-white">${escapeHtml(item.athlete)}</span>
+                <span class="text-xs px-2 py-0.5 rounded-md bg-slate-800 text-sky-300 font-semibold">${posLabel}</span>
+                <span class="text-xs px-2 py-0.5 rounded-md bg-rose-500/15 text-rose-300 border border-rose-500/30 font-semibold">${escapeHtml(windBadge)}</span>
+              </div>
+            </div>
+            <div class="text-right">
+              <span class="font-display font-bold text-base text-emerald-400">${stats.hits}/${stats.count}</span>
+              <div class="text-[11px] text-slate-400">Hajuvus ${stats.maxSpread.toFixed(0)} mm</div>
+            </div>
+          </div>
+
+          <div class="text-xs text-slate-300 truncate">${escapeHtml(item.notes || '')}</div>
+
+          <div class="grid grid-cols-3 gap-2 pt-2 border-t border-slate-800/80">
+            <button type="button" onclick="loadSavedSeriesAsActive('${item.id}')" class="min-h-[42px] px-2.5 py-1.5 rounded-xl text-xs font-bold bg-slate-800 hover:bg-est-blue active:scale-95 text-slate-100 transition">
+              Ava (Roosa)
+            </button>
+            <button type="button" onclick="toggleCompareSeries('${item.id}')" class="min-h-[42px] px-2.5 py-1.5 rounded-xl text-xs font-bold transition active:scale-95 ${
+              isComparing
+                ? 'bg-est-gold text-slate-950'
+                : 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
+            }">
+              ${isComparing ? 'Kuvatud ✓' : '🎯 Kollane'}
+            </button>
+            <button type="button" onclick="deleteSavedSeries('${item.id}')" class="min-h-[42px] px-2.5 py-1.5 rounded-xl text-xs font-bold bg-slate-900 text-slate-400 hover:text-rose-400 active:scale-95 transition">
+              Kustuta
+            </button>
+          </div>
+        `;
+        listEl.appendChild(card);
+      });
+    }
+
+    // =========================================================================
+    // EXPORT (JSON BACKUP & PNG SNAPSHOT)
+    // =========================================================================
+    function exportAllJson() {
+      const dataStr = JSON.stringify(appState.savedSeries, null, 2);
+      const blob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `biathlon-seeriad-${new Date().toISOString().slice(0, 10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('JSON varukoopia alla laaditud');
+    }
+
+    function importJsonFile(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const imported = JSON.parse(e.target.result);
+          if (Array.isArray(imported)) {
+            appState.savedSeries = imported.filter(item => {
+              const name = String(item.athlete || '').trim().toLowerCase();
+              return !REMOVED_ATHLETES.includes(name);
+            });
+            persistSavedSeries();
+            renderAll();
+            showToast(`Imporditud ${appState.savedSeries.length} seeriat!`);
+          } else {
+            showToast('Vigane JSON faili formaat');
+          }
+        } catch (err) {
+          showToast('JSON faili lugemine ebaõnnestus');
+        }
+      };
+      reader.readAsText(file);
+      event.target.value = '';
+    }
+
+    function exportTargetPng() {
+      const svgElement = document.getElementById('biathlonSvg');
+      // Temporarily ensure 1x full target viewBox for clean PNG export
+      const prevViewBox = svgElement.getAttribute('viewBox');
+      svgElement.setAttribute('viewBox', '-105 -105 210 210');
+
+      const serializer = new XMLSerializer();
+      const svgString = serializer.serializeToString(svgElement);
+      svgElement.setAttribute('viewBox', prevViewBox);
+
+      const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(svgBlob);
+
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 1080;
+        canvas.height = 1220;
+        const ctx = canvas.getContext('2d');
+
+        ctx.fillStyle = '#06101E';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = '#0072CE';
+        ctx.fillRect(0, 0, 360, 12);
+        ctx.fillStyle = '#000000';
+        ctx.fillRect(360, 0, 360, 12);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(720, 0, 360, 12);
+
+        ctx.drawImage(img, 40, 40, 1000, 1000);
+
+        const stats = computeAnalytics(appState.activeShots, appState.position);
+        const athlete = getSelectedAthleteName();
+        const posText = appState.position === 'prone' ? 'Lamades (45 mm)' : 'Püsti (115 mm)';
+        const windText = formatWindBadgeString(appState.windDir, appState.windSpeed);
+
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = 'bold 34px Inter, sans-serif';
+        ctx.fillText(`TABAMUSTE MÄRKIMINE • ${athlete}`, 45, 1100);
+
+        ctx.fillStyle = '#38BDF8';
+        ctx.font = '600 25px Inter, sans-serif';
+        ctx.fillText(
+          `${posText}  |  Tabamused: ${stats.hits}/${stats.count}  |  Hajuvus: ${stats.maxSpread.toFixed(1)} mm  |  ${windText}`,
+          45,
+          1145
+        );
+
+        const notes = document.getElementById('inputNotes').value.trim();
+        ctx.fillStyle = '#94A3B8';
+        ctx.font = '22px Inter, sans-serif';
+        ctx.fillText(notes || `${formatEstonianDateTime(new Date())} • 50m Märklaud`, 45, 1185);
+
+        URL.revokeObjectURL(url);
+
+        const pngUrl = canvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.download = `märklaud-${athlete.toLowerCase().replace(/\s+/g, '-')}.png`;
+        link.href = pngUrl;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        showToast('📷 Märklaua PNG pilt salvestatud!');
+      };
+      img.src = url;
+    }
+
+    // =========================================================================
+    // UTILITIES
+    // =========================================================================
+    let toastTimer = null;
+    function showToast(message) {
+      const banner = document.getElementById('toastBanner');
+      const msgEl = document.getElementById('toastMessage');
+      msgEl.textContent = message;
+      banner.classList.remove('translate-y-20', 'opacity-0');
+      banner.classList.add('translate-y-0', 'opacity-100');
+
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        banner.classList.add('translate-y-20', 'opacity-0');
+        banner.classList.remove('translate-y-0', 'opacity-100');
+      }, 2600);
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+  </script>
+</body>
+</html>
